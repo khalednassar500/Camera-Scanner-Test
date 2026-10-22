@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#3a1650" />
+    <meta name="robots" content="noindex" />
+    <title>Camera Scanner Test</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="top">
+      <h1>Camera Scanner Test</h1>
+      <p class="sub">Same engine as the POS register · nothing is uploaded</p>
+    </header>
+
+    <main>
+      <section class="stage" aria-label="Camera">
+        <video id="video" muted playsinline aria-hidden="true"></video>
+        <div id="guide" class="guide" hidden></div>
+        <div id="overlay" class="overlay">
+          <p id="overlayText">Tap <strong>Start camera</strong> and allow camera access.</p>
+        </div>
+      </section>
+
+      <div class="controls">
+        <button id="startBtn" class="primary" type="button">Start camera</button>
+        <select id="cameraSelect" aria-label="Camera" hidden></select>
+        <button id="torchBtn" type="button" hidden aria-pressed="false">Flashlight</button>
+      </div>
+      <label id="zoomRow" class="zoom" hidden>
+        Zoom <input id="zoom" type="range" min="1" max="1" step="0.1" value="1" /> <span id="zoomValue">1×</span>
+      </label>
+
+      <section class="last" aria-live="polite">
+        <p class="label">Last scan</p>
+        <p id="lastCode" class="code">—</p>
+        <p id="lastMeta" class="meta"></p>
+      </section>
+
+      <dl class="stats">
+        <div><dt>Decoder</dt><dd id="engine">—</dd></div>
+        <div><dt>Camera</dt><dd id="resolution">—</dd></div>
+        <div><dt>Decode time</dt><dd id="decodeMs">—</dd></div>
+        <div><dt>Decodes / s</dt><dd id="fps">—</dd></div>
+        <div><dt>Scans</dt><dd id="scanCount">0</dd></div>
+        <div><dt>Different codes</dt><dd id="uniqueCount">0</dd></div>
+      </dl>
+
+      <details class="settings">
+        <summary>Test settings</summary>
+        <label>Decoder
+          <select id="engineSel">
+            <option value="auto">Auto (built-in if available)</option>
+            <option value="zxing">Always ZXing (like iPhone / Windows)</option>
+          </select>
+        </label>
+        <label>Reads to confirm a scan
+          <select id="confirmSel">
+            <option value="1">1 (fastest, may misread)</option>
+            <option value="2" selected>2 (POS default)</option>
+            <option value="3">3 (strictest)</option>
+          </select>
+        </label>
+        <label>Area decoded
+          <select id="areaSel">
+            <option value="box" selected>Guide box (POS default)</option>
+            <option value="full">Whole picture</option>
+          </select>
+        </label>
+        <label>Camera resolution
+          <select id="resSel">
+            <option value="720">1280×720</option>
+            <option value="1080" selected>1920×1080 (POS default)</option>
+            <option value="2160">3840×2160 (if the camera can)</option>
+          </select>
+        </label>
+        <label>Same item again after (ms out of view)
+          <input id="gapInput" type="number" min="100" max="3000" step="50" value="350" />
+        </label>
+        <label class="check"><input id="extraFormats" type="checkbox" /> Also try ITF, Code 39, Data Matrix</label>
+        <label class="check"><input id="soundChk" type="checkbox" checked /> Beep / vibrate on scan</label>
+        <p class="hint">Changing decoder, area, resolution or formats restarts the camera.</p>
+      </details>
+
+      <section class="log">
+        <div class="logHead">
+          <h2>Scan log</h2>
+          <div class="logBtns">
+            <button id="saveFrameBtn" type="button" disabled>Save frame</button>
+            <button id="copyBtn" type="button">Copy CSV</button>
+            <button id="clearBtn" type="button">Clear</button>
+          </div>
+        </div>
+        <p class="hint">“Seen → counted” is the time from the first sighting of a barcode to the scan being counted.</p>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Code</th><th>Format</th><th>Seen → counted</th><th>Time</th></tr>
+          </thead>
+          <tbody id="logBody"></tbody>
+        </table>
+      </section>
+
+      <section class="tips">
+        <h2>Tips for a fair test</h2>
+        <ul>
+          <li>Use the <strong>back camera</strong>. Fill most of the box with the barcode and hold it still.</li>
+          <li>If it is blurry, move it a little farther away — sharp beats big.</li>
+          <li>Try shiny, curved and coloured packs, and in your shop's real light.</li>
+          <li>If a product never reads, tap <strong>Save frame</strong> while it is in the box and send me the image.</li>
+        </ul>
+      </section>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

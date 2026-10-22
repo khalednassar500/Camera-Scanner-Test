@@ -1,0 +1,23 @@
+{
+  "name": "camera-scanner-test",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Standalone test page for the POS camera barcode scanner. Deploy to Vercel and open on a phone.",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "barcode-detector": "3.2.2",
+    "zxing-wasm": "3.1.3"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3",
+    "vite": "5.4.10"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
